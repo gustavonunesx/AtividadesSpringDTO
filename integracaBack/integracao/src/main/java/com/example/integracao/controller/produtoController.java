@@ -25,11 +25,40 @@ public class produtoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(produto);
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<ProdutoDTO> getById(@PathVariable Long id){
+        Optional<ProdutoDTO> produtoDTO =produtoService.getById(id);
+        if(produtoDTO.isPresent()){
+            return ResponseEntity.ok(produtoDTO.get());
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        //outra opcao alem de isPresent
+        //return alunoDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @GetMapping
     public ResponseEntity<List<Produto>> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(produtoService.getAll());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @RequestBody ProdutoDTO produtoDTO){
+        Optional<ProdutoDTO> produtoDTOOptional = produtoService.updateProduto(id, produtoDTO);
+        if (produtoDTOOptional.isPresent()){
+            return ResponseEntity.ok(produtoDTOOptional.get());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        if(produtoService.delete(id)){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
