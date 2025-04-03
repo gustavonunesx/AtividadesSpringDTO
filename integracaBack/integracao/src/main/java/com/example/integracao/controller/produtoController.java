@@ -25,7 +25,7 @@ public class produtoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(produto);
     }
 
-    
+
 
     @GetMapping
     public ResponseEntity<List<Produto>> getAll(){
