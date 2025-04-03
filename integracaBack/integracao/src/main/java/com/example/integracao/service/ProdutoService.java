@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class ProdutoService {
@@ -17,13 +17,14 @@ public class ProdutoService {
 
     public Produto fromDTO(ProdutoDTO produtoDTO){
         Produto produto = new Produto();
-        produto.setId(produto.getId());
+        produto.setId(produtoDTO.getId());
         produto.setNome(produtoDTO.getNome());
-        produto.setQuantidade(produtoDTO.getQuantidade());
         produto.setPreco(Float.parseFloat(produtoDTO.getPreco()));
+        produto.setQuantidade(produtoDTO.getQuantidade());
 
         return produto;
     }
+
 
     public ProdutoDTO toDTO(Produto produto){
         ProdutoDTO produtoDTO = new ProdutoDTO();

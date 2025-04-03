@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/produto")
+@CrossOrigin(origins = "http://localhost:5500") // Permite requisições do front-end
 public class produtoController {
 
     @Autowired
@@ -23,6 +24,8 @@ public class produtoController {
         ProdutoDTO produto = produtoService.saveDto(produtoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(produto);
     }
+
+    
 
     @GetMapping
     public ResponseEntity<List<Produto>> getAll(){
