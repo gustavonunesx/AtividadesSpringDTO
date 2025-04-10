@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastrar Empréstimo</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    form { max-width: 350px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
+    input, button { padding: 8px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>Cadastrar Empréstimo</h2>
+  <form id="formEmprestimo">
+    <input type="number" id="clienteId" placeholder="ID do Cliente" required />
+    <input type="number" id="livroId" placeholder="ID do Livro" required />
+    <input type="date" id="dataEmprestimo" required />
+    <button type="submit">Registrar Empréstimo</button>
+  </form>
+  <div id="mensagem"></div>
+
+  <script>
+    document.getElementById("formEmprestimo").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const clienteId = document.getElementById("clienteId").value;
+      const livroId = document.getElementById("livroId").value;
+      const dataEmprestimo = document.getElementById("dataEmprestimo").value;
+
+      const resposta = await fetch("http://localhost:8080/emprestimo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clienteId, livroId, dataEmprestimo })
+      });
+
+      const mensagem = document.getElementById("mensagem");
+      if (resposta.ok) {
+        mensagem.innerText = "Empréstimo registrado com sucesso!";
+      } else {
+        mensagem.innerText = "Erro ao registrar empréstimo.";
+      }
+    });
+  </script>
+</body>
+</html>

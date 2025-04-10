@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Empréstimos</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h2>Buscar Empréstimo</h2>
+  <input type="text" id="emprestimoId" placeholder="ID do Empréstimo (opcional)" />
+  <button onclick="buscarEmprestimo()">Buscar</button>
+  <div id="resultado"></div>
+
+  <script>
+    async function buscarEmprestimo() {
+      const id = document.getElementById("emprestimoId").value;
+      const url = id ? `http://localhost:8080/emprestimo/${id}` : `http://localhost:8080/emprestimo`;
+
+      const resposta = await fetch(url);
+      const resultado = document.getElementById("resultado");
+
+      if (resposta.ok) {
+        const dados = await resposta.json();
+        const lista = Array.isArray(dados) ? dados : [dados];
+        resultado.innerHTML = lista.map(e => 
+          `<p>ID: ${e.id} | Cliente: ${e.clienteId} | Livro: ${e.livroId} | Data: ${e.dataEmprestimo}</p>`
+        ).join("");
+      } else {
+        resultado.innerText = "Empréstimo não encontrado.";
+      }
+    }
+  </script>
+</body>
+</html>

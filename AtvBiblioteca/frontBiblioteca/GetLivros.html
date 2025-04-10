@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Livros</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h2>Buscar Livro</h2>
+  <input type="text" id="livroId" placeholder="ID do Livro (opcional)" />
+  <button onclick="buscarLivro()">Buscar</button>
+  <div id="resultado"></div>
+
+  <script>
+    async function buscarLivro() {
+      const id = document.getElementById("livroId").value;
+      const url = id ? `http://localhost:8080/livro/${id}` : `http://localhost:8080/livro`;
+
+      const resposta = await fetch(url);
+      const resultado = document.getElementById("resultado");
+
+      if (resposta.ok) {
+        const dados = await resposta.json();
+        const lista = Array.isArray(dados) ? dados : [dados];
+        resultado.innerHTML = lista.map(l => `<p>ID: ${l.id} | Título: ${l.titulo} | Autor: ${l.autor}</p>`).join("");
+      } else {
+        resultado.innerText = "Livro não encontrado.";
+      }
+    }
+  </script>
+</body>
+</html>

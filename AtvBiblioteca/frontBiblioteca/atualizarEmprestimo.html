@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Atualizar Empréstimo</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    form { max-width: 350px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
+    input, button { padding: 8px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>Atualizar Empréstimo</h2>
+  <form id="formAtualizarEmprestimo">
+    <input type="number" id="id" placeholder="ID do Empréstimo" required />
+    <input type="number" id="clienteId" placeholder="ID do Cliente" required />
+    <input type="number" id="livroId" placeholder="ID do Livro" required />
+    <input type="date" id="dataEmprestimo" required />
+    <button type="submit">Atualizar</button>
+  </form>
+  <div id="mensagem"></div>
+
+  <script>
+    document.getElementById("formAtualizarEmprestimo").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const id = document.getElementById("id").value;
+      const clienteId = document.getElementById("clienteId").value;
+      const livroId = document.getElementById("livroId").value;
+      const dataEmprestimo = document.getElementById("dataEmprestimo").value;
+
+      const resposta = await fetch(`http://localhost:8080/emprestimo/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clienteId, livroId, dataEmprestimo })
+      });
+
+      const mensagem = document.getElementById("mensagem");
+      mensagem.innerText = resposta.ok ? "Empréstimo atualizado com sucesso!" : "Erro ao atualizar empréstimo.";
+    });
+  </script>
+</body>
+</html>

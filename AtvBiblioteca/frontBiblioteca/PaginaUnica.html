@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu Biblioteca</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    h1 { text-align: center; }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 30px auto;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card h2 { font-size: 18px; margin-bottom: 10px; }
+    .card a {
+      display: block;
+      margin: 6px 0;
+      padding: 8px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .card a:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Sistema de Biblioteca</h1>
+  <div class="menu">
+    <div class="card">
+      <h2>Clientes</h2>
+      <a href="getClientes.html">Buscar Clientes</a>
+      <a href="atualizarClientes.html">Atualizar Cliente</a>
+      <a href="clienteDelete.html">Remover Cliente</a>
+    </div>
+    <div class="card">
+      <h2>Livros</h2>
+      <a href="LivroCadastrar.html">Cadastrar Livro</a>
+      <a href="GetLivros.html">Buscar Livros</a>
+      <a href="atualizarLivro.html">Atualizar Livro</a>
+      <a href="removerLivro.html">Remover Livro</a>
+    </div>
+    <div class="card">
+      <h2>Empréstimos</h2>
+      <a href="criarEmprestimo.html">Registrar Empréstimo</a>
+      <a href="getEmprestimos.html">Buscar Empréstimos</a>
+      <a href="atualizarEmprestimo.html">Atualizar Empréstimo</a>
+      <a href="deleteEmprestimo.html">Remover Empréstimo</a>
+    </div>
+  </div>
+</body>
+</html>

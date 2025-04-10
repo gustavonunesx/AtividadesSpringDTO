@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Deletar Cliente</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; margin: 5px 0; }
+    #mensagem { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2>Deletar Cliente</h2>
+  <input type="number" id="id" placeholder="ID do Cliente" required />
+  <button onclick="deletarCliente()">Deletar</button>
+  <div id="mensagem"></div>
+
+  <script>
+    async function deletarCliente() {
+      const id = document.getElementById("id").value;
+      const resposta = await fetch(`http://localhost:8080/cliente/${id}`, {
+        method: "DELETE"
+      });
+
+      const mensagem = document.getElementById("mensagem");
+      if (resposta.status === 204) {
+        mensagem.innerText = "Cliente deletado com sucesso!";
+      } else {
+        mensagem.innerText = "Erro ao deletar cliente.";
+      }
+    }
+  </script>
+</body>
+</html>

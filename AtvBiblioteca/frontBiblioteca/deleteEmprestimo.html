@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Deletar Empréstimo</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h2>Deletar Empréstimo</h2>
+  <input type="number" id="id" placeholder="ID do Empréstimo" required />
+  <button onclick="deletarEmprestimo()">Deletar</button>
+  <div id="mensagem"></div>
+
+  <script>
+    async function deletarEmprestimo() {
+      const id = document.getElementById("id").value;
+      const resposta = await fetch(`http://localhost:8080/emprestimo/${id}`, {
+        method: "DELETE"
+      });
+
+      const mensagem = document.getElementById("mensagem");
+      mensagem.innerText = resposta.status === 204 ? "Empréstimo deletado com sucesso!" : "Erro ao deletar empréstimo.";
+    }
+  </script>
+</body>
+</html>
+    

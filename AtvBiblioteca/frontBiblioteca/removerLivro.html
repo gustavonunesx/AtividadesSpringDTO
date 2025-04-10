@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Deletar Livro</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h2>Deletar Livro</h2>
+  <input type="number" id="id" placeholder="ID do Livro" />
+  <button onclick="deletarLivro()">Deletar</button>
+  <div id="mensagem"></div>
+
+  <script>
+    async function deletarLivro() {
+      const id = document.getElementById("id").value;
+      const resposta = await fetch(`http://localhost:8080/livro/${id}`, {
+        method: "DELETE"
+      });
+
+      const mensagem = document.getElementById("mensagem");
+      mensagem.innerText = resposta.status === 204 ? "Livro deletado com sucesso!" : "Erro ao deletar livro.";
+    }
+  </script>
+</body>
+</html>

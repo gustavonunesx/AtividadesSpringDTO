@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Listar Clientes</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; margin: 5px 0; }
+    #resultado { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Buscar Cliente</h2>
+  <input type="text" id="clienteId" placeholder="ID do Cliente (opcional)" />
+  <button onclick="buscarCliente()">Buscar</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    async function buscarCliente() {
+      const id = document.getElementById("clienteId").value;
+      const url = id ? `http://localhost:8080/cliente/${id}` : `http://localhost:8080/cliente`;
+      
+      const resposta = await fetch(url);
+      const resultado = document.getElementById("resultado");
+      
+      if (resposta.ok) {
+        const dados = await resposta.json();
+        const lista = Array.isArray(dados) ? dados : [dados];
+        resultado.innerHTML = lista.map(c => `<p>ID: ${c.id} | Nome: ${c.nome} | Email: ${c.email}</p>`).join("");
+      } else {
+        resultado.innerText = "Cliente não encontrado.";
+      }
+    }
+  </script>
+</body>
+</html>
