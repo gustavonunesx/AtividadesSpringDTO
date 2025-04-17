@@ -1,7 +1,6 @@
 package com.example.atividadeBiblioteca.controller;
 
-import com.example.atividadeBiblioteca.dto.EmprestimoDTORequest;
-import com.example.atividadeBiblioteca.dto.EmprestimoDTOResponse;
+import com.example.atividadeBiblioteca.dto.EmprestimoDTO;
 import com.example.atividadeBiblioteca.entity.Emprestimo;
 import com.example.atividadeBiblioteca.service.EmprestimoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,34 +18,33 @@ public class EmprestimoController {
     @Autowired
     private EmprestimoService emprestimoService;
 
-
     @GetMapping
-    public ResponseEntity<List<Emprestimo>> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.getAll());
+    public List<Emprestimo> getAll(){
+        return emprestimoService.getAllEmprestimos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmprestimoDTOResponse> getById(@PathVariable  Long id){
-        Optional<EmprestimoDTOResponse> cursoDTO = emprestimoService.getById(id);
-        if(cursoDTO.isPresent()){
-            return ResponseEntity.ok(cursoDTO.get());
+    public ResponseEntity<EmprestimoDTO> getById(@PathVariable Long id){
+        Optional<EmprestimoDTO> emprestimoDTOOptional = emprestimoService.getById(id);
+        if(emprestimoDTOOptional.isPresent()){
+            return ResponseEntity.ok(emprestimoDTOOptional.get());
         }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<EmprestimoDTOResponse> created(@RequestBody EmprestimoDTORequest emprestimoDTORequest){
-        EmprestimoDTOResponse emprestimo = emprestimoService.saveDto(emprestimoDTORequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(emprestimo);
+    public ResponseEntity<EmprestimoDTO> create(@RequestBody EmprestimoDTO emprestimoDTO){
+        EmprestimoDTO emprestimoDTOSave = emprestimoService.create(emprestimoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(emprestimoDTOSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmprestimoDTOResponse> update(@PathVariable Long id, @RequestBody EmprestimoDTORequest emprestimoDTORequest){
-        Optional<EmprestimoDTOResponse> emprestimoDTOResponse = emprestimoService.updateEmprestimo(id, emprestimoDTORequest);
-        if (emprestimoDTOResponse.isPresent()){
-            return ResponseEntity.ok(emprestimoDTOResponse.get());
-        }else {
+    public ResponseEntity<EmprestimoDTO> update(@PathVariable Long id, @RequestBody EmprestimoDTO emprestimoDTO){
+        Optional<EmprestimoDTO> emprestimoDTOOptional = emprestimoService.update(id, emprestimoDTO);
+        if(emprestimoDTOOptional.isPresent()){
+            return ResponseEntity.ok(emprestimoDTOOptional.get());
+        }else{
             return ResponseEntity.notFound().build();
         }
     }
@@ -59,5 +57,4 @@ public class EmprestimoController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

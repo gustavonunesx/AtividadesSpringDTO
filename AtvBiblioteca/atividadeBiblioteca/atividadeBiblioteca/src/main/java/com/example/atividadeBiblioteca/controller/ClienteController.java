@@ -19,32 +19,32 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(clienteService.getAll());
+    public List<Cliente> getAll(){
+        return clienteService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDTO> getById(@PathVariable Long id){
-        Optional<ClienteDTO> clienteDTO= clienteService.getById(id);
-        if(clienteDTO.isPresent()){
-            return ResponseEntity.ok(clienteDTO.get());
+        Optional<ClienteDTO> clienteDTOOptional = clienteService.getById(id);
+        if(clienteDTOOptional.isPresent()){
+            return ResponseEntity.ok(clienteDTOOptional.get());
         }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<ClienteDTO> created(@RequestBody ClienteDTO clienteDTO){
-        ClienteDTO cliente = clienteService.save(clienteDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+    public ResponseEntity<ClienteDTO> create(@RequestBody ClienteDTO clienteDTO){
+        ClienteDTO clienteDTOSave = clienteService.create(clienteDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteDTOSave);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClienteDTO> update(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO){
         Optional<ClienteDTO> clienteDTOOptional = clienteService.updateCliente(id, clienteDTO);
-        if (clienteDTOOptional.isPresent()){
+        if(clienteDTOOptional.isPresent()){
             return ResponseEntity.ok(clienteDTOOptional.get());
-        }else {
+        }else{
             return ResponseEntity.notFound().build();
         }
     }

@@ -1,16 +1,20 @@
 package com.example.atividadeBiblioteca.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Cliente {
+public class Cliente implements Serializable { // ajuda converter obj em json
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +22,18 @@ public class Cliente {
     private String nome;
     private String sobrenome;
     @Column(nullable = false, unique = true) // nao permite valor nulo e nem que se repita em outros
-    private int cpf;
+    private String cpf;
 
-    // cascade = cascadeType.ALL faz com que quando um Emprestimo for deletado o cliente também seja deletado
-    @OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private Emprestimo emprestimo;
+    @OneToMany(mappedBy = "cliente")
+    @JsonIgnore
+    private Set<Emprestimo> emprestimo; // estrutura Set tem o mesmo funcionamento do List, porém evitando a duplicidade de valores
+
+    public Cliente(Long idCliente, String nome, String sobrenome, String cpf){
+        this.idCliente = idCliente;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.cpf = cpf;
+    }
 
 
 

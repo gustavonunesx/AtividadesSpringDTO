@@ -14,17 +14,24 @@ import java.util.List;
 @Entity
 public class Emprestimo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmprestimo;
     private LocalDate data_inicial;
     private LocalDate data_final;
 
 
-    @OneToMany(mappedBy = "emprestimo", cascade = CascadeType.ALL)
-    private List<Livro> livro;
-
-    @OneToOne
-    @JoinColumn(name = "idCliente" , referencedColumnName = "idCliente")
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", referencedColumnName = "idCliente")
     private Cliente cliente;
+
+    @ManyToMany
+    @JoinTable(
+            name = "emprestimo_livro",
+            joinColumns = @JoinColumn(name = "emprestimo_id"),
+            inverseJoinColumns = @JoinColumn(name = "livro_id")
+    )
+    private List<Livro> livros;
 
 
 

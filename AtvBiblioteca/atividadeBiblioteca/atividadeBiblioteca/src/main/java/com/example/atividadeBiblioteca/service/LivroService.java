@@ -13,58 +13,45 @@ import java.util.Optional;
 public class LivroService {
 
     @Autowired
-    private LivroRepository livroRepository;
+    public LivroRepository livroRepository;
 
-
-    public Livro fromDTO(LivroDTO livroDTO){
-        Livro livro = new Livro();
-        livro.setNome(livroDTO.getNome());
-        livro.setEmprestimo(livroDTO.getEmprestimo());
-
-        return livro;
-    }
-
-    public LivroDTO toDTO(Livro livro){
-        LivroDTO livroDTO = new LivroDTO();
-        livroDTO.setNome(livro.getNome());
-        livroDTO.setEmprestimo(livro.getEmprestimo());
-
-
-        return livroDTO;
-    }
-
-    public List<Livro> getAll(){
+    public List<Livro> getAll() {
         return livroRepository.findAll();
     }
 
+    public List<Livro> getAllByName(String nome){
+        return livroRepository.findAllByNome(nome);
+    }
+
     public Optional<LivroDTO> getById(Long id){
-        Optional<Livro> optionalLivro = livroRepository.findById(id);
-        if(optionalLivro.isPresent()){
-            return Optional.of(this.toDTO(optionalLivro.get()));
+        Optional<Livro> livroOptional = livroRepository.findById(id);
+        if(livroOptional.isPresent()){
+            LivroDTO livroDTO = new LivroDTO();
+            return Optional.of(livroDTO.fromLivro(livroOptional.get()));
         }else {
             return Optional.empty();
         }
-
     }
 
-    public LivroDTO saveDto(LivroDTO livroDTO){
-        Livro livro = this.fromDTO(livroDTO);
-        Livro livroBd = livroRepository.save(livro);
-        return this.toDTO(livroBd);
+    public LivroDTO create(LivroDTO livroDTO){
+        Livro livro = livroDTO.toLivro();
+        livro = livroRepository.save(livro);
+        return livroDTO.fromLivro(livro);
     }
 
-    public Optional<LivroDTO> updateLivro(Long id, LivroDTO livroDTO){
-        Optional<Livro> optionalLivro = livroRepository.findById(id);
-        if(optionalLivro.isPresent()){
-            Livro livro= optionalLivro.get();
-            livro.setEmprestimo(livroDTO.getEmprestimo());
+    public Optional<LivroDTO> update(Long id, LivroDTO livroDTO){
+        Optional<Livro> livroOptional = livroRepository.findById(id);
+        if(livroOptional.isPresent()){
+            Livro livro = livroOptional.get();
             livro.setNome(livroDTO.getNome());
+            livro.setAutor(livroDTO.getAutor());
+            livro.setIsbn(livroDTO.getIsbn());
+            livro.setGenero(livro.getGenero());
 
+            livro = livroRepository.save(livro);
 
-            Livro livroUpdate = livroRepository.save(livro);
-
-            return Optional.of(this.toDTO(livroUpdate));
-        }else {
+            return Optional.of(livroDTO.fromLivro(livro));
+        }else{
             return Optional.empty();
         }
     }
